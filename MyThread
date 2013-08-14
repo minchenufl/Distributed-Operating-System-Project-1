@@ -1,0 +1,57 @@
+import java.io.FileNotFoundException;
+
+/**
+ * MyThread inherit the Thread class
+ **/
+public class MyThread extends Thread
+{
+	private Resource fs;
+	public int sleepTime, opTime;
+	private int index;   				//thread's index
+	private int m;       				//times for loop
+	private int visitCounter; 			//counter for thread's entrance to critical section
+	
+	/*
+	 * constructor of MyThread
+	 */
+	MyThread(int m, Resource fs, int index, int opTime, int sleepTime)
+	{
+		this.fs = fs;
+		this.index = index;
+		this.sleepTime = sleepTime; 
+		this.opTime = opTime;
+		this.m = m;
+		
+	}
+	
+	public void run()
+	{
+		for(int i = 1; i <= m; i++)
+		{
+			visitCounter = i;
+			try {
+				fs.visitResource(this); 		
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	/**
+	 *@return the index of this thread 
+	*/
+	
+	public int getIndex()      
+	{
+		return index;
+	}
+
+	/**
+	 * @return the counter for entrance into the critical section
+	 */
+	public int getCounter( )
+	{
+		return visitCounter;
+	}
+	
+}
